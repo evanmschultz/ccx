@@ -7,7 +7,12 @@
       "Bash(go tool cover:*)",
       "Bash(tree:*)",
       "mcp__zen__thinkdeep",
-      "mcp__zen__chat"
+      "mcp__zen__chat",
+      "mcp__serena__initial_instructions",
+      "mcp__serena__write_memory",
+      "mcp__serena__replace_regex",
+      "mcp__zen__codereview",
+      "mcp__serena__get_symbols_overview"
     ],
     "deny": []
   }

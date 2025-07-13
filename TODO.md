@@ -61,7 +61,7 @@ Starting fresh Go implementation with TDD and hexagonal architecture.
 - [x] `AddAccountUseCase` with tests ✅
 - [x] `ListAccountsUseCase` with tests ✅
 - [x] `SwitchAccountUseCase` with tests ✅
-- [ ] `RemoveAccountUseCase` with tests
+- [x] `RemoveAccountUseCase` with tests ✅
 - [ ] `SetAliasUseCase` with tests
 - [ ] `GetHistoryUseCase` with tests
 
