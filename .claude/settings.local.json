@@ -5,7 +5,8 @@
       "Bash(go test:*)",
       "Bash(just check)",
       "Bash(go tool cover:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "mcp__zen__thinkdeep"
     ],
     "deny": []
   }

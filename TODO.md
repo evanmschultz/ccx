@@ -25,40 +25,40 @@ Starting fresh Go implementation with TDD and hexagonal architecture.
 - [x] `TODO.md` - This file
 - [x] `DEVELOPMENT_PLAN.md` - Comprehensive TDD plan
 
-## Phase 1: Domain Layer (Days 2-3)
+## Phase 1: Domain Layer (Days 2-3) ✅
 
 ### Entities
-- [ ] Write `domain/account_test.go` - First failing test
-- [ ] Implement `Account` entity with validation
-- [ ] Write `domain/credentials_test.go`
-- [ ] Implement `Credentials` with encryption
-- [ ] Write `domain/history_test.go`
-- [ ] Implement `History` tracking
+- [x] Write `domain/account_test.go` - First failing test
+- [x] Implement `Account` entity with validation
+- [x] Write `domain/credentials_test.go`
+- [x] Implement `Credentials` with encryption
+- [x] Write `domain/history_test.go`
+- [x] Implement `History` tracking
 - [ ] Write `domain/migration_test.go`
 - [ ] Implement `Migration` from ccswitch
 
 ### Domain Rules
-- [ ] Account email validation
-- [ ] Alias uniqueness
-- [ ] Account ID generation
-- [ ] History size limits
+- [x] Account email validation
+- [x] Alias uniqueness
+- [x] Account ID generation
+- [x] History size limits
 
-## Phase 2: Ports Definition (Day 4)
+## Phase 2: Ports Definition (Day 4) ✅
 
 ### Repository Interfaces
-- [ ] `AccountRepository` interface
-- [ ] `CredentialStore` interface
-- [ ] `ConfigManager` interface
-- [ ] `HistoryRepository` interface
+- [x] `AccountRepository` interface
+- [x] `CredentialStore` interface
+- [x] `ConfigManager` interface
+- [x] `HistoryRepository` interface
 
 ### External Service Interfaces
 - [ ] `UpdateChecker` interface
 - [ ] `ShellIntegration` interface
 
-## Phase 3: Use Cases (Days 5-7)
+## Phase 3: Use Cases (Days 5-7) 🚧
 
 ### Core Use Cases
-- [ ] `AddAccountUseCase` with tests
+- [x] `AddAccountUseCase` with tests ✅
 - [ ] `ListAccountsUseCase` with tests
 - [ ] `SwitchAccountUseCase` with tests
 - [ ] `RemoveAccountUseCase` with tests
