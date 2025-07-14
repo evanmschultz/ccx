@@ -110,6 +110,49 @@ Every feature must meet:
 5. ✅ Documentation for public APIs
 6. ✅ Integration tests for user flows
 
+## Resolved CI/Linting Issues (July 2025)
+
+### 🔧 **CI/Local Tooling Synchronization Fixed**
+**Issue**: CI used golangci-lint v1 with golangci-lint v2 configuration causing "golangci-lint v2 config with v1 tool" error.
+
+**Solution Applied**:
+- Updated CI to use official `golangci-lint-action@v8` with pinned v2.2.2
+- Created `tools/tools.go` to pin tool dependencies in go.mod for consistency
+- Updated justfile to use go.mod-pinned versions (removed @latest)
+- Converted `.golangci.yml` to proper v2 schema format
+
+### 🧹 **Common Linting Issues & Solutions**
+Based on resolving 38 linting issues during v2 migration:
+
+**Unchecked Errors (errcheck)**:
+- ❌ `defer os.RemoveAll(tmpDir)` in tests
+- ✅ `defer func() { _ = os.RemoveAll(tmpDir) }()` or `_ = os.RemoveAll(tmpDir)`
+- ❌ `repo.Save(ctx, account)` in tests  
+- ✅ `_ = repo.Save(ctx, account)` or proper error handling
+
+**Unused Parameters (revive)**:
+- ❌ `func Save(ctx context.Context, account *domain.Account) error` (ctx unused)
+- ✅ `func Save(_ context.Context, account *domain.Account) error` (rename to _)
+
+**Security Issues (gosec)**:
+- ❌ `os.WriteFile(path, data, 0o644)` (too permissive)
+- ✅ `os.WriteFile(path, data, 0o600)` (owner-only)
+- ❌ `os.ReadFile(filePath)` with dynamic path
+- ✅ Add `//nolint:gosec // G304: Controlled file path in test environment`
+
+**Package Comments (revive/staticcheck)**:
+- ❌ Missing package comment
+- ✅ `// Package json provides file-based persistence adapters for ccx.`
+
+**Unused Code (unused)**:
+- ❌ `type claudeConfig struct { ... }` (defined but never used)
+- ✅ Remove unused types, variables, and functions
+
+### 🎯 **Coverage Standards**
+- **Threshold**: 80% minimum (82.2% current)
+- **Domain Layer**: Aim for 100% coverage (business logic critical)
+- **Infrastructure**: 70%+ acceptable (external dependencies)
+
 ## Current Focus
 
 See `TODO.md` for current development phase and tasks.
