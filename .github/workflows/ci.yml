@@ -24,7 +24,6 @@ jobs:
     - name: Install tools
       run: |
         go install mvdan.cc/gofumpt@latest
-        go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
         go install golang.org/x/vuln/cmd/govulncheck@latest
 
     - name: Verify dependencies
@@ -40,8 +39,10 @@ jobs:
           exit 1
         fi
 
-    - name: Run linters
-      run: golangci-lint run
+    - name: golangci-lint
+      uses: golangci/golangci-lint-action@v8
+      with:
+        version: v2.2.2
 
     - name: Run tests with race detector
       run: go test -race -coverprofile=coverage.out ./...

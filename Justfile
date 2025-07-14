@@ -106,11 +106,11 @@ profile-mem:
     go test -memprofile=mem.prof -bench=.
     @echo "Run 'go tool pprof -http=:8080 mem.prof' to view profile"
 
-# Update all tools
+# Update all tools (using versions pinned in go.mod)
 tools-update:
-    go install mvdan.cc/gofumpt@latest
-    go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
-    go install golang.org/x/vuln/cmd/govulncheck@latest
+    go install mvdan.cc/gofumpt
+    go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint
+    go install golang.org/x/vuln/cmd/govulncheck
 
 # Show current Go version and environment
 env:

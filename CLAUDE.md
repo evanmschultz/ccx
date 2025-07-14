@@ -6,7 +6,9 @@ You are working on ccx (Claude Code eXchange) - a multi-account switcher for Cla
 
 ### 🚨 BLOCKING Quality Standards
 **ALL of these are MANDATORY - code CANNOT proceed until fixed:**
+- ❌ **Formatting errors** (`gofumpt -l .` must show no files)
 - ❌ **Linting errors** (`golangci-lint run` must pass)
+- ❌ **Security violations** (`gosec` must pass - file permissions, etc.)
 - ❌ **Race conditions** (`go test -race` must pass)
 - ❌ **Dead code** (`unused` linter must be clean)
 - ❌ **Test failures** (ALL tests must pass)
@@ -14,6 +16,12 @@ You are working on ccx (Claude Code eXchange) - a multi-account switcher for Cla
 - ❌ **Vet issues** (`go vet` must pass)
 
 **We DO NOT move forward with ANY of these present. Period.**
+
+### 🔒 Security Requirements (CI Enforced)
+- **File permissions**: Use 0o600 for files, 0o700 for directories
+- **Directory access**: Owner-only (no group/world read)
+- **Credential storage**: Must use encryption + restrictive permissions
+- **No hardcoded secrets**: All sensitive data through secure channels
 
 ### Testing Philosophy
 - **No mocks in domain layer** - Use real implementations or interfaces
@@ -39,16 +47,27 @@ You are working on ccx (Claude Code eXchange) - a multi-account switcher for Cla
    - Minimal code to pass (GREEN)
    - Refactor with all checks passing (REFACTOR)
 
-2. **Quality Gates** (via `just check`)
-   - `gofumpt -l -w .` - Format code
-   - `golangci-lint run` - All linters must pass
-   - `go test -race -cover` - Tests with race detection
-   - `go build` - Successful compilation
+2. **Quality Gates** (MANDATORY ORDER - prevents CI failures)
+   - `just fmt` - **ALWAYS RUN FIRST** - Format code (gofumpt)
+   - `just check` - Full quality suite:
+     - `gofumpt -l -w .` - Verify formatting (after fmt)
+     - `golangci-lint run` - All linters + security (gosec)
+     - `go test -race -cover` - Tests with race detection
+     - `go build` - Successful compilation
 
-3. **Incremental Development**
+3. **Pre-Commit Workflow** (CRITICAL for CI)
+   ```bash
+   just fmt      # Format first (fixes most issues)
+   just check    # Verify all quality gates
+   git add .     # Only after checks pass
+   git commit    # Commit with confidence
+   ```
+
+4. **Incremental Development**
    - Each phase produces working, tested code
    - No moving forward until quality gates pass
    - Small, focused commits
+   - **NEVER commit without running quality gates**
 
 ## Architecture
 
