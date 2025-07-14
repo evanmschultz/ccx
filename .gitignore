@@ -53,6 +53,12 @@ debug
 .ccx/
 .claude-switch-backup/
 
+# Claude Code local settings
+.claude/settings.local.json
+
+# Serena MCP server cache
+.serena/
+
 # Build artifacts
 build/
 release/
