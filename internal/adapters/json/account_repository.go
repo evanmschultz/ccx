@@ -42,7 +42,7 @@ func (r *FileAccountRepository) Save(ctx context.Context, account *domain.Accoun
 	defer r.mu.Unlock()
 
 	// Ensure data directory exists
-	if err := os.MkdirAll(r.dataDir, 0755); err != nil {
+	if err := os.MkdirAll(r.dataDir, 0o700); err != nil {
 		return err
 	}
 
@@ -218,7 +218,7 @@ func (r *FileAccountRepository) saveAccounts(accounts []accountData) error {
 		return err
 	}
 
-	return os.WriteFile(filePath, data, 0644)
+	return os.WriteFile(filePath, data, 0o600)
 }
 
 // convertToAccount converts accountData to domain.Account

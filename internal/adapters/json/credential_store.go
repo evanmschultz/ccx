@@ -32,7 +32,7 @@ func (s *FileCredentialStore) Store(ctx context.Context, creds *domain.Credentia
 
 	// Ensure credentials directory exists
 	credsDir := filepath.Join(s.dataDir, "credentials")
-	if err := os.MkdirAll(credsDir, 0700); err != nil { // More restrictive permissions for credentials
+	if err := os.MkdirAll(credsDir, 0o700); err != nil { // More restrictive permissions for credentials
 		return fmt.Errorf("failed to create credentials directory: %w", err)
 	}
 
@@ -45,8 +45,8 @@ func (s *FileCredentialStore) Store(ctx context.Context, creds *domain.Credentia
 	// Write to file named by account ID
 	filename := fmt.Sprintf("%s.json", creds.AccountID())
 	filePath := filepath.Join(credsDir, filename)
-	
-	if err := os.WriteFile(filePath, data, 0600); err != nil { // Restrictive permissions
+
+	if err := os.WriteFile(filePath, data, 0o600); err != nil { // Restrictive permissions
 		return fmt.Errorf("failed to write credentials file: %w", err)
 	}
 

@@ -41,7 +41,7 @@ func TestBasicConfigManager_GetCurrentAccount(t *testing.T) {
 
 	configData, _ := json.MarshalIndent(claudeConfig, "", "  ")
 	configPath := filepath.Join(tmpDir, ".claude.json")
-	err = os.WriteFile(configPath, configData, 0644)
+	err = os.WriteFile(configPath, configData, 0o644)
 	if err != nil {
 		t.Fatalf("Failed to create test config: %v", err)
 	}
@@ -130,14 +130,14 @@ func TestBasicConfigManager_UpdateExistingConfig(t *testing.T) {
 			"emailAddress": "old@example.com",
 			"accountUuid":  "old-uuid",
 		},
-		"organization":   "old-org",
+		"organization":  "old-org",
 		"api_key":       "old-key",
 		"other_setting": "should-be-preserved",
 	}
 
 	configData, _ := json.MarshalIndent(existingConfig, "", "  ")
 	configPath := filepath.Join(tmpDir, ".claude.json")
-	err = os.WriteFile(configPath, configData, 0644)
+	err = os.WriteFile(configPath, configData, 0o644)
 	if err != nil {
 		t.Fatalf("Failed to create existing config: %v", err)
 	}

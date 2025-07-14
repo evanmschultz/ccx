@@ -22,7 +22,7 @@ func TestFileCredentialStore_Store(t *testing.T) {
 	// Create test credentials
 	accountID := domain.GenerateAccountID()
 	testData := []byte("test-credential-data")
-	
+
 	creds, err := domain.NewCredentials(accountID, testData)
 	if err != nil {
 		t.Fatalf("Failed to create credentials: %v", err)
@@ -59,7 +59,7 @@ func TestFileCredentialStore_Retrieve(t *testing.T) {
 	// Create and store test credentials
 	accountID := domain.GenerateAccountID()
 	testData := []byte("test-credential-data")
-	
+
 	creds, err := domain.NewCredentials(accountID, testData)
 	if err != nil {
 		t.Fatalf("Failed to create credentials: %v", err)
@@ -102,7 +102,7 @@ func TestFileCredentialStore_Delete(t *testing.T) {
 	// Create and store test credentials
 	accountID := domain.GenerateAccountID()
 	testData := []byte("test-credential-data")
-	
+
 	creds, err := domain.NewCredentials(accountID, testData)
 	if err != nil {
 		t.Fatalf("Failed to create credentials: %v", err)

@@ -43,7 +43,7 @@ func (m *BasicConfigManager) GetCurrentAccount(ctx context.Context) (*domain.Acc
 	defer m.mu.RUnlock()
 
 	configPath := filepath.Join(m.configDir, ".claude.json")
-	
+
 	// If config doesn't exist, return nil (no current account)
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		return nil, nil
@@ -93,7 +93,7 @@ func (m *BasicConfigManager) SetCurrentAccount(ctx context.Context, account *dom
 	defer m.mu.Unlock()
 
 	configPath := filepath.Join(m.configDir, ".claude.json")
-	
+
 	// Read existing config or create new one
 	var config map[string]json.RawMessage
 	if data, err := os.ReadFile(configPath); err == nil {
@@ -127,12 +127,12 @@ func (m *BasicConfigManager) SetCurrentAccount(ctx context.Context, account *dom
 	}
 
 	// Ensure config directory exists
-	if err := os.MkdirAll(m.configDir, 0755); err != nil {
+	if err := os.MkdirAll(m.configDir, 0o700); err != nil {
 		return fmt.Errorf("failed to create config directory: %w", err)
 	}
 
 	// Write to file
-	if err := os.WriteFile(configPath, updatedData, 0644); err != nil {
+	if err := os.WriteFile(configPath, updatedData, 0o600); err != nil {
 		return fmt.Errorf("failed to write config file: %w", err)
 	}
 
