@@ -26,7 +26,7 @@ func NewFileCredentialStore(dataDir string) ports.CredentialStore {
 }
 
 // Store securely saves credentials to an encrypted file
-func (s *FileCredentialStore) Store(ctx context.Context, creds *domain.Credentials) error {
+func (s *FileCredentialStore) Store(_ context.Context, creds *domain.Credentials) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -54,7 +54,7 @@ func (s *FileCredentialStore) Store(ctx context.Context, creds *domain.Credentia
 }
 
 // Retrieve gets credentials for an account
-func (s *FileCredentialStore) Retrieve(ctx context.Context, accountID domain.AccountID) (*domain.Credentials, error) {
+func (s *FileCredentialStore) Retrieve(_ context.Context, accountID domain.AccountID) (*domain.Credentials, error) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
@@ -68,7 +68,7 @@ func (s *FileCredentialStore) Retrieve(ctx context.Context, accountID domain.Acc
 	}
 
 	// Read file
-	data, err := os.ReadFile(filePath)
+	data, err := os.ReadFile(filePath) // #nosec G304 - controlled file path within app data directory
 	if err != nil {
 		return nil, fmt.Errorf("failed to read credentials file: %w", err)
 	}
@@ -83,7 +83,7 @@ func (s *FileCredentialStore) Retrieve(ctx context.Context, accountID domain.Acc
 }
 
 // Delete removes credentials for an account
-func (s *FileCredentialStore) Delete(ctx context.Context, accountID domain.AccountID) error {
+func (s *FileCredentialStore) Delete(_ context.Context, accountID domain.AccountID) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 

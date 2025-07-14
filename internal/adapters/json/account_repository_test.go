@@ -16,7 +16,7 @@ func TestFileAccountRepository_Save(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
-	defer os.RemoveAll(tmpDir)
+	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	repo := NewFileAccountRepository(tmpDir)
 	ctx := context.Background()
@@ -44,7 +44,7 @@ func TestFileAccountRepository_Save(t *testing.T) {
 	}
 
 	// Verify content
-	data, err := os.ReadFile(filePath)
+	data, err := os.ReadFile(filePath) // #nosec G304 - test file with controlled path
 	if err != nil {
 		t.Fatalf("Failed to read accounts file: %v", err)
 	}
@@ -69,7 +69,7 @@ func TestFileAccountRepository_FindByID(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
-	defer os.RemoveAll(tmpDir)
+	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	repo := NewFileAccountRepository(tmpDir)
 	ctx := context.Background()
@@ -110,7 +110,7 @@ func TestFileAccountRepository_List(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
-	defer os.RemoveAll(tmpDir)
+	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	repo := NewFileAccountRepository(tmpDir)
 	ctx := context.Background()
@@ -120,8 +120,8 @@ func TestFileAccountRepository_List(t *testing.T) {
 	account2, _ := domain.NewAccount("test2@example.com", "alias2", "uuid2")
 
 	// Save accounts
-	repo.Save(ctx, account1)
-	repo.Save(ctx, account2)
+	_ = repo.Save(ctx, account1)
+	_ = repo.Save(ctx, account2)
 
 	// Test listing
 	accounts, err := repo.List(ctx)
@@ -140,14 +140,14 @@ func TestFileAccountRepository_Delete(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
-	defer os.RemoveAll(tmpDir)
+	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	repo := NewFileAccountRepository(tmpDir)
 	ctx := context.Background()
 
 	// Create and save test account
 	account, _ := domain.NewAccount("test@example.com", "alias", "uuid")
-	repo.Save(ctx, account)
+	_ = repo.Save(ctx, account)
 
 	// Test deletion
 	err = repo.Delete(ctx, account.ID())

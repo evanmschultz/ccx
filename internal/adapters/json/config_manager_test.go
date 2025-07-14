@@ -16,7 +16,7 @@ func TestBasicConfigManager_GetCurrentAccount(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
-	defer os.RemoveAll(tmpDir)
+	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	configManager := NewBasicConfigManager(tmpDir)
 	ctx := context.Background()
@@ -41,7 +41,7 @@ func TestBasicConfigManager_GetCurrentAccount(t *testing.T) {
 
 	configData, _ := json.MarshalIndent(claudeConfig, "", "  ")
 	configPath := filepath.Join(tmpDir, ".claude.json")
-	err = os.WriteFile(configPath, configData, 0o644)
+	err = os.WriteFile(configPath, configData, 0o600)
 	if err != nil {
 		t.Fatalf("Failed to create test config: %v", err)
 	}
@@ -67,7 +67,7 @@ func TestBasicConfigManager_SetCurrentAccount(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
-	defer os.RemoveAll(tmpDir)
+	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	configManager := NewBasicConfigManager(tmpDir)
 	ctx := context.Background()
@@ -95,7 +95,7 @@ func TestBasicConfigManager_SetCurrentAccount(t *testing.T) {
 	}
 
 	// Verify config content
-	configData, err := os.ReadFile(configPath)
+	configData, err := os.ReadFile(configPath) // #nosec G304 - test file with controlled path
 	if err != nil {
 		t.Fatalf("Failed to read config file: %v", err)
 	}
@@ -122,7 +122,7 @@ func TestBasicConfigManager_UpdateExistingConfig(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
-	defer os.RemoveAll(tmpDir)
+	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	// Create existing config with additional fields and oauthAccount
 	existingConfig := map[string]interface{}{
@@ -137,7 +137,7 @@ func TestBasicConfigManager_UpdateExistingConfig(t *testing.T) {
 
 	configData, _ := json.MarshalIndent(existingConfig, "", "  ")
 	configPath := filepath.Join(tmpDir, ".claude.json")
-	err = os.WriteFile(configPath, configData, 0o644)
+	err = os.WriteFile(configPath, configData, 0o600)
 	if err != nil {
 		t.Fatalf("Failed to create existing config: %v", err)
 	}
@@ -162,7 +162,7 @@ func TestBasicConfigManager_UpdateExistingConfig(t *testing.T) {
 	}
 
 	// Verify other settings are preserved
-	configData, err = os.ReadFile(configPath)
+	configData, err = os.ReadFile(configPath) // #nosec G304 - test file with controlled path
 	if err != nil {
 		t.Fatalf("Failed to read updated config: %v", err)
 	}

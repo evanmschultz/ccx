@@ -14,7 +14,7 @@ func TestFileCredentialStore_Store(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
-	defer os.RemoveAll(tmpDir)
+	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	store := NewFileCredentialStore(tmpDir)
 	ctx := context.Background()
@@ -51,7 +51,7 @@ func TestFileCredentialStore_Retrieve(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
-	defer os.RemoveAll(tmpDir)
+	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	store := NewFileCredentialStore(tmpDir)
 	ctx := context.Background()
@@ -94,7 +94,7 @@ func TestFileCredentialStore_Delete(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
-	defer os.RemoveAll(tmpDir)
+	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	store := NewFileCredentialStore(tmpDir)
 	ctx := context.Background()

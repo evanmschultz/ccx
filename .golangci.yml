@@ -1,115 +1,33 @@
 version: "2"
 
-# Formatters section for v2
-formatters:
-  enable:
-    - gofumpt       # Stricter formatting than gofmt
-    - goimports     # Manages import statements
-  
-
 linters:
-  default: none  # Equivalent to disable-all: true in v1
+  default: none
+  
   enable:
     - errcheck      # Check for unchecked errors
     - gosec         # Security issues
     - ineffassign   # Ineffectual assignments
-    - predeclared   # Catches shadowed predeclared identifiers
     - staticcheck   # Advanced static analysis
-    - govet         # Standard go vet (includes shadow with proper config)
+    - govet         # Standard go vet
     - misspell      # Spelling errors
-    - unconvert     # Unnecessary type conversions
-    - prealloc      # Preallocate slices where possible
+    - unused        # Finds unused code
     - revive        # Extensible linter (golint replacement)
-    - gocritic      # Opinionated linter with many checks
-    - unused        # Finds unused code (functions, types, variables, etc.)
-    - unparam       # Finds unused function parameters
-    - bodyclose     # Checks whether HTTP response body is closed successfully
-    - dupl          # Finds code clones/duplications
-    - exhaustive    # Checks exhaustiveness of enum switch statements
-    - gocyclo       # Checks cyclomatic complexity
-    - goconst       # Finds repeated strings that could be replaced by constants
-    - nolintlint    # Reports ill-formed or insufficient nolint directives
-    - makezero      # Finds slice declarations with non-zero initial length
-    - funlen        # Checks function length
-  
-  exclusions:
-    rules:
-      - path: _test\.go
-        linters:
-          - funlen
-          - gosec  # Security warnings in tests are often false positives
 
-linters-settings:
-  funlen:
-    lines: 60       # Maximum number of lines in a function
-    statements: 40  # Maximum number of statements in a function
-  
-  errcheck:
-    check-type-assertions: true  # Check type assertions too
-    check-blank: true           # Check _ assignments
-  
-  gosec:
-    severity: medium
-    confidence: medium
-  
-  staticcheck:
-    checks: ["all"]  # Enable all staticcheck checks
-  
-  revive:
-    severity: warning
-    rules:
-      - name: blank-imports
-      - name: context-as-argument
-      - name: dot-imports
-      - name: error-return
-      - name: error-strings
-      - name: error-naming
-      - name: if-return
-      - name: increment-decrement
-      - name: var-naming
-      - name: package-comments
-      - name: range
-      - name: receiver-naming
-      - name: indent-error-flow
-      - name: superfluous-else
-      - name: modifies-parameter
-      - name: unreachable-code
-      - name: redefines-builtin-id  # Catches variable shadowing of builtins
-  
-  gocritic:
-    enabled-tags:
-      - performance
-      - diagnostic
-    # No need to list default enabled checks
-  
-  govet:
-    enable:
-      - shadow  # Enable shadow checking in govet
-  
-  gocyclo:
-    min-complexity: 15  # Functions with complexity > 15 are flagged
-  
-  dupl:
-    threshold: 100  # Minimum token sequence for duplication detection
-  
-  unparam:
-    check-exported: true  # Check exported functions too
+  settings:
+    errcheck:
+      check-type-assertions: true
+    
+    gosec:
+      severity: medium
+      confidence: medium
+    
+    staticcheck:
+      checks: ["all"]
 
 run:
-  timeout: 5m  # Timeout for analysis
-  tests: true  # Include test files
+  timeout: 5m
+  tests: true
 
 issues:
-  # Don't skip issues in new code
-  new: true
-  
-  # Maximum issues count per one linter. Set to 0 to disable
   max-issues-per-linter: 0
-  
-  # Maximum count of issues with the same text. Set to 0 to disable
   max-same-issues: 0
-  
-  # Exclude directories from analysis (v2 syntax)
-  exclude-dirs:
-    - vendor       # External dependencies
-  

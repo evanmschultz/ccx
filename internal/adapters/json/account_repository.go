@@ -1,3 +1,4 @@
+// Package json provides file-based implementations of domain repositories using JSON for persistence.
 package json
 
 import (
@@ -37,7 +38,7 @@ func NewFileAccountRepository(dataDir string) ports.AccountRepository {
 }
 
 // Save persists an account to the JSON file
-func (r *FileAccountRepository) Save(ctx context.Context, account *domain.Account) error {
+func (r *FileAccountRepository) Save(_ context.Context, account *domain.Account) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
@@ -82,7 +83,7 @@ func (r *FileAccountRepository) Save(ctx context.Context, account *domain.Accoun
 }
 
 // FindByID retrieves an account by its ID
-func (r *FileAccountRepository) FindByID(ctx context.Context, id domain.AccountID) (*domain.Account, error) {
+func (r *FileAccountRepository) FindByID(_ context.Context, id domain.AccountID) (*domain.Account, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
@@ -101,7 +102,7 @@ func (r *FileAccountRepository) FindByID(ctx context.Context, id domain.AccountI
 }
 
 // FindByEmail retrieves an account by email
-func (r *FileAccountRepository) FindByEmail(ctx context.Context, email domain.Email) (*domain.Account, error) {
+func (r *FileAccountRepository) FindByEmail(_ context.Context, email domain.Email) (*domain.Account, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
@@ -120,7 +121,7 @@ func (r *FileAccountRepository) FindByEmail(ctx context.Context, email domain.Em
 }
 
 // FindByAlias retrieves an account by alias
-func (r *FileAccountRepository) FindByAlias(ctx context.Context, alias string) (*domain.Account, error) {
+func (r *FileAccountRepository) FindByAlias(_ context.Context, alias string) (*domain.Account, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
@@ -139,7 +140,7 @@ func (r *FileAccountRepository) FindByAlias(ctx context.Context, alias string) (
 }
 
 // List returns all accounts
-func (r *FileAccountRepository) List(ctx context.Context) ([]*domain.Account, error) {
+func (r *FileAccountRepository) List(_ context.Context) ([]*domain.Account, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
@@ -161,7 +162,7 @@ func (r *FileAccountRepository) List(ctx context.Context) ([]*domain.Account, er
 }
 
 // Delete removes an account
-func (r *FileAccountRepository) Delete(ctx context.Context, id domain.AccountID) error {
+func (r *FileAccountRepository) Delete(_ context.Context, id domain.AccountID) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
@@ -196,7 +197,7 @@ func (r *FileAccountRepository) loadAccounts() ([]accountData, error) {
 		return []accountData{}, nil
 	}
 
-	data, err := os.ReadFile(filePath)
+	data, err := os.ReadFile(filePath) // #nosec G304 - controlled file path within app data directory
 	if err != nil {
 		return nil, err
 	}

@@ -18,12 +18,6 @@ type BasicConfigManager struct {
 	mu        sync.RWMutex
 }
 
-// claudeConfig represents the structure of Claude's configuration file
-type claudeConfig struct {
-	OAuthAccount *oauthAccount              `json:"oauthAccount,omitempty"`
-	Other        map[string]json.RawMessage `json:"-"`
-}
-
 // oauthAccount represents the OAuth account section in Claude config
 type oauthAccount struct {
 	EmailAddress string `json:"emailAddress"`
@@ -38,7 +32,7 @@ func NewBasicConfigManager(configDir string) ports.ConfigManager {
 }
 
 // GetCurrentAccount reads the current account from Claude config
-func (m *BasicConfigManager) GetCurrentAccount(ctx context.Context) (*domain.Account, error) {
+func (m *BasicConfigManager) GetCurrentAccount(_ context.Context) (*domain.Account, error) {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
 
@@ -50,7 +44,7 @@ func (m *BasicConfigManager) GetCurrentAccount(ctx context.Context) (*domain.Acc
 	}
 
 	// Read config file
-	data, err := os.ReadFile(configPath)
+	data, err := os.ReadFile(configPath) // #nosec G304 - controlled config path within app directory
 	if err != nil {
 		return nil, fmt.Errorf("failed to read config file: %w", err)
 	}
@@ -88,7 +82,7 @@ func (m *BasicConfigManager) GetCurrentAccount(ctx context.Context) (*domain.Acc
 }
 
 // SetCurrentAccount updates Claude config with the new account
-func (m *BasicConfigManager) SetCurrentAccount(ctx context.Context, account *domain.Account) error {
+func (m *BasicConfigManager) SetCurrentAccount(_ context.Context, account *domain.Account) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
@@ -96,6 +90,7 @@ func (m *BasicConfigManager) SetCurrentAccount(ctx context.Context, account *dom
 
 	// Read existing config or create new one
 	var config map[string]json.RawMessage
+	// #nosec G304 - controlled config path within app directory
 	if data, err := os.ReadFile(configPath); err == nil {
 		if err := json.Unmarshal(data, &config); err != nil {
 			return fmt.Errorf("failed to parse existing config: %w", err)
