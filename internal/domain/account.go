@@ -60,6 +60,33 @@ func NewAccount(email, alias, uuid string) (*Account, error) {
 	}, nil
 }
 
+// ReconstructAccount recreates an account with specific ID and timestamps.
+// Used by adapters to recreate accounts from persistence layer.
+func ReconstructAccount(id AccountID, email, alias, uuid string, createdAt, lastUsed time.Time) (*Account, error) {
+	if err := ValidateEmail(email); err != nil {
+		return nil, err
+	}
+
+	if uuid == "" {
+		return nil, errors.New("uuid cannot be empty")
+	}
+
+	if alias != "" {
+		if err := validateAlias(alias); err != nil {
+			return nil, err
+		}
+	}
+
+	return &Account{
+		id:        id,
+		email:     Email(email),
+		alias:     alias,
+		uuid:      uuid,
+		createdAt: createdAt,
+		lastUsed:  lastUsed,
+	}, nil
+}
+
 // ValidateEmail validates an email address
 func ValidateEmail(email string) error {
 	if email == "" {
