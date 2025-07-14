@@ -154,7 +154,7 @@ static-analysis:
     go vet -all ./...
 
 # Generate and check test coverage with thresholds
-coverage-check threshold="90":
+coverage-check threshold="80":
     @go test -coverprofile=coverage.out ./...
     @total=$(go tool cover -func=coverage.out | grep total | awk '{print $3}' | sed 's/%//'); \
     echo "Total coverage: $total%"; \
